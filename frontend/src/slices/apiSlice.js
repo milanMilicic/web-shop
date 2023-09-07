@@ -9,5 +9,3 @@ export const apiSlice = createApi({
     endpoints: (builder) => ({}),
 });
 
-console.log(apiSlice);
-

@@ -3,6 +3,7 @@ import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
 import Rating from '../components/Rating';
 import { useGetProductDetailsQuery } from '../slices/productsApiSlices';
 import Loader from '../components/Loader';
+import Message from '../components/Message';
 
 function ProductScreen() {
     const {id: productId} = useParams(); //moze i params.   id nazvali productId
@@ -13,9 +14,7 @@ function ProductScreen() {
     <>
         <Link className='btn btn-light my-3' to='/'>Go Back</Link>
 
-        { isLoading ? <Loader /> : error ? (<div>
-            {error?.data?.message || error.error}
-        </div>) : (
+        { isLoading ? <Loader /> : error ? (<Message variant='danger'>{ error?.data?.message || error.error}</Message>) : (
             <Row>
             <Col md={5}>
                <Image src={product.image} alt={product.name} fluid/> 

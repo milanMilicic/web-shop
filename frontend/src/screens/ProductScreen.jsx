@@ -2,6 +2,7 @@ import {Link, useParams} from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
 import Rating from '../components/Rating';
 import { useGetProductDetailsQuery } from '../slices/productsApiSlices';
+import Loader from '../components/Loader';
 
 function ProductScreen() {
     const {id: productId} = useParams(); //moze i params.   id nazvali productId
@@ -12,7 +13,7 @@ function ProductScreen() {
     <>
         <Link className='btn btn-light my-3' to='/'>Go Back</Link>
 
-        { isLoading ? (<h2>Loading...</h2>) : error ? (<div>
+        { isLoading ? <Loader /> : error ? (<div>
             {error?.data?.message || error.error}
         </div>) : (
             <Row>

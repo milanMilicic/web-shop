@@ -46,7 +46,14 @@ const registerUser = asyncHandler( async (req, res) => {
 //Log out user / clear cookie
 // POST /api/users/logout
 const logoutUser = asyncHandler( async (req, res) => {
-    res.send('logout user');
+    res.cookie('jwt', '', {
+        httpOnly: true,
+        expires: new Date(0)
+    });
+
+    // drugi nacin res.clearCookie('jwt');
+
+    res.status(200).json({ message: 'Logged out successfully' })
 });
 
 

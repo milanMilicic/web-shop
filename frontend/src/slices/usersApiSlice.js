@@ -6,7 +6,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         login: builder.mutation({   //mutation kada saljemo neke podatke, npr POST zahtev, a query kada imamo obican GET
             query: (data) => ({
-                url: `${USERS_URL}/auth`,
+                url: `${USERS_URL}/login`,
                 method: 'POST',
                 body: data
             }),

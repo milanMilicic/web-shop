@@ -11,6 +11,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: data
             }),
         }),
+        register: builder.mutation({    //mutation kada saljemo neke podatke, npr POST zahtev, a query kada imamo obican GET
+            query: (data) => ({
+                url: USERS_URL,
+                method: 'POST',
+                body: data
+            }),
+        }),
         logout: builder.mutation({   //mutation kada saljemo neke podatke, npr POST zahtev, a query kada imamo obican GET
             query: () => ({
                 url: `${USERS_URL}/logout`,
@@ -20,4 +27,4 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useLoginMutation, useLogoutMutation } = usersApiSlice;
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation } = usersApiSlice;

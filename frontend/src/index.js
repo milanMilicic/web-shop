@@ -14,6 +14,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import ShippingScreen from './screens/ShippingScreen';
 import PrivateRoute from './components/PrivateRoute';
+import PaymentScreen from './screens/PaymentScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
 
         <Route path='' element={<PrivateRoute />}>
           <Route path='/shipping' element={<ShippingScreen />} />
+          <Route path='/payment' element={<PaymentScreen />} />
         </Route>
     </Route>
   )

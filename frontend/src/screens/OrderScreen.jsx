@@ -3,7 +3,7 @@ import { Row, Col, ListGroup, Image, Form, Button, Card, ListGroupItem } from 'r
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { useGetOrderDetailsQuery, usePayOrderMutation, useGetPayPalClientIdQuery } from '../slices/ordersApiSlice'
+import { useGetOrderDetailsQuery, usePayOrderMutation, useGetPayPalClientIdQuery, useDeliverOrderMutation } from '../slices/ordersApiSlice'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
@@ -14,6 +14,7 @@ function OrderScreen() {
     const { data: order, refetch, isLoading, error } = useGetOrderDetailsQuery(orderId);
 
     const [payOrder, { isLoading: loadingPay}] = usePayOrderMutation();
+    const [deliverOrder, { isLoading: loadingDeliver}] = useDeliverOrderMutation();
     const [{isPending}, paypalDispatch] = usePayPalScriptReducer();
     const {data: paypal, isLoading: loadingPayPal, error: errorPayPal} = useGetPayPalClientIdQuery();
 
@@ -53,11 +54,11 @@ function OrderScreen() {
     }
 
 
-    async function onApproveTest() {
+    /* async function onApproveTest() {
         await payOrder({ orderId, details: { payer: {} } });
         refetch();
         toast.success('Order is paid');
-        }
+    } */
 
     function onError(error){
         toast.error(error.message);
@@ -75,6 +76,16 @@ function OrderScreen() {
         }).then((orderId) => {
             return orderId;
         });
+    }
+
+    const deliverOrderHandler = async () => {
+        try {
+            await deliverOrder(orderId);
+            refetch();
+            toast.success('Order delivered');
+        } catch (error) {
+            toast.error(error?.data?.message || error.message);
+        }
     }
 
   return isLoading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
@@ -97,7 +108,7 @@ function OrderScreen() {
                         </p>
                         {order.isDelivered ? (
                             <Message variant='success'>
-                                Delivered on {order.deliveredAt}
+                                Delivered on {order.deliveredAt.substring(0, 9)}
                             </Message>
                         ) : (
                             <Message variant='danger'>Not Delivered</Message>
@@ -173,7 +184,7 @@ function OrderScreen() {
 
                                     {isPending ? <Loader /> : (
                                         <div>
-                                            <Button style={{marginBottom: '10px'}} onClick={onApproveTest}>Test Pay Order</Button>
+                                            {/* <Button style={{marginBottom: '10px'}} onClick={onApproveTest}>Test Pay Order</Button> */}
                                             <div>
                                                 <PayPalButtons createOrder={createOrder} onApprove={onApprove} onError={onError}></PayPalButtons>
                                             </div>
@@ -183,7 +194,14 @@ function OrderScreen() {
                                 </ListGroup.Item>
                             )}
 
-                        {/* MARKS AS DELIVERED PLACEHOLDER*/}
+                        {loadingDeliver && <Loader />}
+                        {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                            <ListGroup.Item>
+                                <Button type='button' className='btn btn-block' onClick={deliverOrderHandler}>
+                                    Mark As Delivered
+                                </Button>
+                            </ListGroup.Item>
+                        )}
                     </ListGroup>
                 </Card>
             </Col>

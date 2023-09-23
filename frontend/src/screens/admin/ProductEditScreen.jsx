@@ -38,6 +38,7 @@ function ProductEditScreen() {
     const submitHandler = async (e) => {
         e.preventDefault();
         const updatedProduct = {
+            productId,
             name,
             price,
             image,
@@ -47,7 +48,7 @@ function ProductEditScreen() {
             description,
         };
 
-        const result = await updateProduct(updatedProduct, productId);
+        const result = await updateProduct(updatedProduct);
         if(result.error){
             toast.error(result.error);
         } else {

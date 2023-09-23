@@ -22,11 +22,11 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 url: PRODUCTS_URL,
                 method: 'POST'
             }),
-            invalidatesTags: ['Product'],
+            invalidatesTags: ['Product'],   //removes cached data
         }),
         updateProduct: builder.mutation({
-            query: (data, productId) => ({
-                url: `${PRODUCTS_URL}/${productId}`,
+            query: (data) => ({
+                url: `${PRODUCTS_URL}/${data.productId}`,
                 method: 'PUT',
                 body: data,
             }),

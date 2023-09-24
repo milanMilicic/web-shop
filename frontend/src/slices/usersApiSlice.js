@@ -31,7 +31,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: data,
             }),
         }),
+        getUsers: builder.query({   //mutation kada saljemo neke podatke, npr POST zahtev, a query kada imamo obican GET
+            query: (data) => ({
+                url: USERS_URL,
+            }),
+            providesTags: ['User'], //Users
+            keepUnusedDataFor: 5,
+        }),
     }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useProfileMutation } = usersApiSlice;
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useProfileMutation, useGetUsersQuery } = usersApiSlice;

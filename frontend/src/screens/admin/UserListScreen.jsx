@@ -3,18 +3,29 @@ import { Table, Button } from 'react-bootstrap'
 import { FaTimes, FaTrash, FaEdit, FaCheck } from 'react-icons/fa'
 import Message from '../../components/Message'
 import Loader from '../../components/Loader'
-import { useGetUsersQuery } from '../../slices/usersApiSlice'
+import { useGetUsersQuery, useDeleteUserMutation } from '../../slices/usersApiSlice'
+import { toast } from 'react-toastify'
 
 function UserListScreen() {
   const { data: users, refetch, isLoading, error } = useGetUsersQuery();
+  const [deleteUser, {isLoading: loadingDelete}] = useDeleteUserMutation();
 
-  const deleteHandler = (id) => {
-    console.log(id);
+  const deleteHandler = async (id) => {
+    if(window.confirm('Are you sure you want to delete this user?')){
+      try {
+        await deleteUser(id);
+        toast.success('User deleted');
+        refetch();
+      } catch (error) {
+        toast.error(error?.data?.message || error.error);
+      }
+    }
   }
 
   return (
     <>
       <h1>Users</h1>
+      {loadingDelete && <Loader />}
       {isLoading ? <Loader /> : error ? 
       <Message variant='danger'>
         {error}
@@ -44,7 +55,7 @@ function UserListScreen() {
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`admin/user/${user._id}/edit`}>
+                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
                     <Button variant='light' className='btn-sm'>
                       <FaEdit />
                     </Button>

@@ -15,8 +15,6 @@ const getProducts = asyncHandler( async (req, res) => {
         page,
         pages: Math.ceil(count / productsPerPage),
     });
-    console.log(req.query);
-    console.log(req.params);
 });
 
 // GET /api/products/:id

@@ -3,8 +3,20 @@ import Product from '../models/productModel.js'
 
 // GET /api/products
 const getProducts = asyncHandler( async (req, res) => {
-    const products = await Product.find({});
-    res.json(products);
+    const productsPerPage = 4;
+
+    const page = Number(req.query.pageNumber) || 1;
+
+    const count = await Product.countDocuments();
+
+    const products = await Product.find({}).limit(productsPerPage).skip(productsPerPage * (page - 1));
+    res.json({
+        products,
+        page,
+        pages: Math.ceil(count / productsPerPage),
+    });
+    console.log(req.query);
+    console.log(req.params);
 });
 
 // GET /api/products/:id

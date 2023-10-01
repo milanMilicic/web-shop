@@ -100,6 +100,8 @@ function ProductEditScreen() {
                 <Form.Control type="file" placeholder="Choose file" onChange={uploadFileHandler}></Form.Control>
             </Form.Group>
 
+            {loadingUpload && <Loader />}
+
             <Form.Group className="mt-2" controlId="brand">
                 <Form.Label>Brand</Form.Label>
                 <Form.Control type="text" placeholder="Enter brand" value={brand} onChange={(e) => setBrand(e.target.value)}>

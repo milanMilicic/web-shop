@@ -80,7 +80,7 @@ function ProductEditScreen() {
         <h1>Edit</h1>
         {loadingUpdate && <Loader />}
 
-        {isLoading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
+        {isLoading ? <Loader /> : error ? <Message variant='danger'>{error.data.message}</Message> : (
            <Form onSubmit={submitHandler}>
             <Form.Group controlId="name">
                 <Form.Label>Name</Form.Label>

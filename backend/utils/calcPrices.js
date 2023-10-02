@@ -17,7 +17,7 @@ function addDecimals(num) {
     const taxPrice = 0.15 * itemsPrice;
   
     // Calculate the total price
-    const totalPrice = itemsPrice + shippingPrice + taxPrice;
+    const totalPrice = itemsPrice + shippingPrice;
   
     // return prices as strings fixed to 2 decimal places
     return {

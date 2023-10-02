@@ -78,28 +78,40 @@ const getOrderById = asyncHandler( async (req, res) => {
 // Update order to paid
 // PUT /api/orders/:id/pay
 // Private
-const updateOrderToPaid = asyncHandler( async (req, res) => {
+const updateOrderToPaid = asyncHandler(async (req, res) => {
+    // NOTE: here we need to verify the payment was made to PayPal before marking
+    // the order as paid
+    const { verified, value } = await verifyPayPalPayment(req.body.id);
+    if (!verified) throw new Error('Payment not verified');
+  
+    // check if this transaction has been used before
+    const isNewTransaction = await checkIfNewTransaction(Order, req.body.id);
+    if (!isNewTransaction) throw new Error('Transaction has been used before');
+  
     const order = await Order.findById(req.params.id);
-
-    if(order){
+  
+    if (order) {
+      // check the correct amount was paid
+      const paidCorrectAmount = order.totalPrice.toString() === value;
+      if (!paidCorrectAmount) throw new Error('Incorrect amount paid');
+  
       order.isPaid = true;
-      order.paidAt = new Date();
+      order.paidAt = Date.now();
       order.paymentResult = {
         id: req.body.id,
         status: req.body.status,
         update_time: req.body.update_time,
         email_address: req.body.payer.email_address,
       };
-
+  
       const updatedOrder = await order.save();
-
-      res.status(200).json(updatedOrder);
-
+  
+      res.json(updatedOrder);
     } else {
-        res.status(404);
-        throw new Error('Order not found');
+      res.status(404);
+      throw new Error('Order not found');
     }
-});
+  });
 
 
 // Update order to delivered

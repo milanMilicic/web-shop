@@ -22,9 +22,11 @@ const cartSlice = createSlice({
             }
 
             //Calculate items price
-            state.itemsPrice = state.cartItems.reduce((sum, item) => {
+            const itemsPrice = state.cartItems.reduce((sum, item) => {
                 return sum + item.price * item.qty
             }, 0);
+
+            state.itemsPrice = addDecimals(itemsPrice);
 
             //Calculate shipping price
             state.shippingPrice = addDecimals(state.itemsPrice > 100 ? 0 : 10);
@@ -41,9 +43,11 @@ const cartSlice = createSlice({
             state.cartItems = state.cartItems.filter(item => item._id !== action.payload);
 
             //Calculate items price
-            state.itemsPrice = state.cartItems.reduce((sum, item) => {
+            const itemsPrice = state.cartItems.reduce((sum, item) => {
                 return sum + item.price * item.qty
             }, 0);
+
+            state.itemsPrice = addDecimals(itemsPrice);
 
             //Calculate shipping price
             state.shippingPrice = addDecimals(state.itemsPrice > 100 ? 0 : 10);
@@ -60,9 +64,11 @@ const cartSlice = createSlice({
             state.shippingAddress = action.payload;
 
             //Calculate items price
-            state.itemsPrice = state.cartItems.reduce((sum, item) => {
+            const itemsPrice = state.cartItems.reduce((sum, item) => {
                 return sum + item.price * item.qty
             }, 0);
+
+            state.itemsPrice = addDecimals(itemsPrice);
 
             //Calculate shipping price
             state.shippingPrice = addDecimals(state.itemsPrice > 100 ? 0 : 10);
@@ -79,9 +85,11 @@ const cartSlice = createSlice({
             state.paymentMethod = action.payload;
 
             //Calculate items price
-            state.itemsPrice = state.cartItems.reduce((sum, item) => {
+            const itemsPrice = state.cartItems.reduce((sum, item) => {
                 return sum + item.price * item.qty
             }, 0);
+
+            state.itemsPrice = addDecimals(itemsPrice);
 
             //Calculate shipping price
             state.shippingPrice = addDecimals(state.itemsPrice > 100 ? 0 : 10);
@@ -98,9 +106,11 @@ const cartSlice = createSlice({
             state.cartItems = [];
 
             //Calculate items price
-            state.itemsPrice = state.cartItems.reduce((sum, item) => {
+            const itemsPrice = state.cartItems.reduce((sum, item) => {
                 return sum + item.price * item.qty
             }, 0);
+
+            state.itemsPrice = addDecimals(itemsPrice);
 
             //Calculate shipping price
             state.shippingPrice = addDecimals(state.itemsPrice > 100 ? 0 : 10);

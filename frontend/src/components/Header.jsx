@@ -31,7 +31,7 @@ function Header() {
 
   return (
     <header>
-        <Navbar bg='dark' variant='dark' expand='md' collapseOnSelect>
+        <Navbar bg='primary' data-bs-theme="dark" expand='md' collapseOnSelect>
             <Container>
                 <LinkContainer to='/'>
                     <Navbar.Brand>
